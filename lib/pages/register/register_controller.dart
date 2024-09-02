@@ -11,8 +11,7 @@ class RegisterController extends GetxController {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-
-    File? imageFile;
+  File? imageFile;
 
 
 }

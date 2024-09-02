@@ -9,13 +9,12 @@ class RegisterPage extends StatelessWidget {
   RegisterController con = Get.put(RegisterController());
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
           children: [
-            _backgroundCover(context),
+            _backgroundHome(MediaQuery.of(context).size.height, MediaQuery.of(context).size.width),
             _boxForm(context),
             _imageUser(context),
             _buttonBack(),
@@ -24,11 +23,34 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _backgroundCover(BuildContext context) {
+  Widget _backgroundHome(screenHeight, screenWidth) {
     return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.4,
-      color: Colors.black,
+      width: screenWidth,
+      height: screenHeight  * 0.45,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [
+                Color(0xFF620505),
+                Color(0xFF481616)
+              ],
+              begin: FractionalOffset(0.2, 0.0),
+              end: FractionalOffset(1.0, 0.6),
+              stops: [0.0, 0.6],
+              tileMode: TileMode.clamp
+          )
+      ),
+      child: FittedBox(
+        fit: BoxFit.none,
+        alignment: Alignment(-1.5, -0.8),
+        child: Container(
+          width: screenHeight,
+          height: screenHeight,
+          decoration: BoxDecoration(
+              color: Color.fromRGBO(0, 0, 0, 0.05),
+              borderRadius: BorderRadius.circular(screenHeight / 2)
+          ),
+        ),
+      ),
     );
   }
 

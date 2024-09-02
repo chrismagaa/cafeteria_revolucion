@@ -1,3 +1,4 @@
+import 'package:cafeteria_revolucion/pages/client/client_page.dart';
 import 'package:cafeteria_revolucion/pages/register/register_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,12 @@ import 'package:cafeteria_revolucion/pages/login/login_page.dart';
           getPages: [
             GetPage(name: "/", page: () => LoginPage()),
             GetPage(name: "/register", page: () => RegisterPage()),
+            GetPage(name: "/client", page: () => ClientPage()),
           ],
           navigatorKey: Get.key,
           theme: ThemeData(
             primaryColor: Colors.black,
+            fontFamily: 'Poppins',
             //colorScheme: ColorScheme.light(primary: Colors.black),
             colorScheme: ColorScheme(
                 brightness: Brightness.light,
