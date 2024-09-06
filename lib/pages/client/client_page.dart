@@ -1,44 +1,39 @@
+import 'package:cafeteria_revolucion/pages/client/client_controller.dart';
 import 'package:cafeteria_revolucion/pages/client/home/client_home_page.dart';
 import 'package:cafeteria_revolucion/pages/client/menu/client_menu_page.dart';
 import 'package:cafeteria_revolucion/pages/client/ordena/client_ordena_page.dart';
 import 'package:cafeteria_revolucion/pages/client/promos/client_promos_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ClientPage extends StatefulWidget {
-  const ClientPage({super.key});
+class ClientPage extends StatelessWidget {
 
-  @override
-  State<ClientPage> createState() => _ClientPageState();
-}
-
-class _ClientPageState extends State<ClientPage> {
-
-  int currentPageIndex = 0;
+  ClientController con = Get.put(ClientController());
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
-    return Scaffold(
+    return
+      Obx( () =>
+      Scaffold(
       bottomNavigationBar: _bottomNavigationBar(),
       body: <Widget>[
         ClientHomePage(),
         ClientMenuPage(),
         ClientPromosPage(),
         ClientOrdenaPage()
-      ][currentPageIndex],
-    );
+      ][con.currentPageIndex.value],
+    ));
   }
 
   Widget _bottomNavigationBar(){
     return NavigationBar(
         onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
+          con.currentPageIndex.value = index;
         },
         indicatorColor:  Color(0xff3d0505),
-        selectedIndex: currentPageIndex,
+        selectedIndex: con.currentPageIndex.value,
         destinations: [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
@@ -60,9 +55,7 @@ class _ClientPageState extends State<ClientPage> {
             selectedIcon: Icon(Icons.shopping_bag_sharp, color: Colors.white),
             label: 'Ordena',
           ),
-        ],
-
-
+        ]
     );
   }
 

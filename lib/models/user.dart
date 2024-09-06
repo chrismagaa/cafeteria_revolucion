@@ -12,7 +12,9 @@ class User {
   String? lastName;
   String? phone;
   String? authToken;
+  String? tokenPush;
   bool? isNumberPhoneVerified;
+
 
   User({
     this.id,
@@ -22,6 +24,7 @@ class User {
     this.lastName,
     this.phone,
     this.authToken,
+    this.tokenPush,
     this.isNumberPhoneVerified,
   });
 
@@ -33,6 +36,7 @@ class User {
     lastName: json["last_name"],
     phone: json["phone"],
     authToken: json["auth_token"],
+    tokenPush: json["token_push"],
     isNumberPhoneVerified: json["is_number_phone_verified"]?? false,
   );
 
@@ -44,6 +48,7 @@ class User {
     "last_name": lastName,
     "phone": phone,
     "auth_token": authToken,
+    "token_push": tokenPush,
     "is_number_phone_verified": isNumberPhoneVerified,
   };
 }

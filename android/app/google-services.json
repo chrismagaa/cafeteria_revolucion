@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "819769582190",
+    "project_id": "cafe-revolucion-mesero",
+    "storage_bucket": "cafe-revolucion-mesero.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819769582190:android:3372de08cc6a2d8ca5bc7f",
+        "android_client_info": {
+          "package_name": "com.example.cafe_revolucion_virtual"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819769582190-g3ck05u0a56vh5qsb242ucpluihfdavl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cafe_revolucion_virtual",
+            "certificate_hash": "6511041fa6f3a27447a17b953356073bc3247107"
+          }
+        },
+        {
+          "client_id": "819769582190-6hqavshtihk8lqk1o6dk4mubornafni8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeG_Noua64Ib5uzBjPJ3caQ3GVr_vIcWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819769582190-6hqavshtihk8lqk1o6dk4mubornafni8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "819769582190-260mgejskchjk8s5fvn3rckiikjrl28d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cafeteriaRevolucion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

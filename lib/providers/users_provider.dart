@@ -3,12 +3,52 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../environment/environment.dart';
 import '../models/response_api.dart';
+import 'google_provider.dart';
 
 class UsersProvider extends GetConnect {
 
   String url = Environment.API_URL + "users";
 
   User userSession = User.fromJson(GetStorage().read('user') ?? {});
+
+
+  /*
+  Future<ResponseApi> loginWithGoogle(GoogleAuthData account) async {
+
+    Response response = await post('$url/loginWithGoogle',
+        account.toJson(),
+        headers: {
+          'Content-Type': 'application/json'
+        });
+
+    if (response.body == null) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi(
+          success: false,
+          message: "No se pudo ejecutar la petición"
+      );
+    }
+
+    print("RESPONSE LOGIN: ${response.body}");
+    print("RESPONSE LOGIN: ${response.statusCode}");
+    print("RESPONSE LOGIN: ${response.bodyString}");
+
+
+
+    try {
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
+
+  }
+
+   */
 
     Future<ResponseApi> login(String email, String password) async {
 
@@ -20,28 +60,51 @@ class UsersProvider extends GetConnect {
       }); // Esperar hasta que el servidor retorne la respuesta
 
 
+      print("RESPONSE LOGIN: ${response.body}");
+      print("RESPONSE LOGIN: ${response.statusCode}");
+      print("RESPONSE LOGIN: ${response.bodyString}");
+
       if (response.body == null) {
         Get.snackbar("Error", "No se pudo ejecutar la petición");
-        return ResponseApi();
+        return ResponseApi(success: false, message: "No se pudo ejecutar la petición");
       }
 
-      print("RESPONSE USER LOGIN: ${response.body}");
-
-      ResponseApi responseApi = ResponseApi.fromJson(response.body);
-
-      return responseApi;
+      try{
+        ResponseApi responseApi = ResponseApi.fromJson(response.body);
+        return responseApi;
+      }catch(e){
+        print("Error: $e");
+        return ResponseApi(
+            success: false,
+            message: "Algo salió mal"
+        );
+      }
     }
 
-  Future<ResponseApi> create(User user) async {
-    Response response = await post('$url/create', user.toJson(), headers: {
+  Future<ResponseApi> create(String email, String name, String password) async {
+    Response response = await post('$url/create', {
+      "email": email,
+      "name": name,
+      "password": password
+    }, headers: {
       'Content-Type': 'application/json'
     }); // Esperar hasta que el servidor retorne la respuesta
 
-    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+    if (response.body == null) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi(success: false, message: "No se pudo ejecutar la petición");
+    }
 
-    print("RESPONSE USER CREATE: ${responseApi.toJson()}");
-
-    return responseApi;
+    try {
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
   }
 
 
@@ -67,12 +130,16 @@ class UsersProvider extends GetConnect {
     }
 
 
-
-    ResponseApi responseApi = ResponseApi.fromJson(response.body);
-
-    print("RESPONSE USER sendCodeNumberPhone: ${responseApi.toJson()}");
-
-    return responseApi;
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
   }
 
 
@@ -85,6 +152,8 @@ class UsersProvider extends GetConnect {
       'Authorization': "Token ${userSession.authToken ?? ''}"
     });
 
+    print("RESPONSE USER numberPhoneVerify: ${response.body}");
+
     if (response.body == null) {
       Get.snackbar("Error", "No se pudo ejecutar la petición");
       return ResponseApi();
@@ -95,10 +164,16 @@ class UsersProvider extends GetConnect {
       return ResponseApi();
     }
 
-    ResponseApi responseApi = ResponseApi.fromJson(response.body);
-    print("RESPONSE USER UPDATE: ${responseApi.toJson()}");
-
-    return responseApi;
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
   }
 
   Future<ResponseApi> deleteAccount(String id) async {
@@ -120,11 +195,16 @@ class UsersProvider extends GetConnect {
       return ResponseApi();
     }
 
-    ResponseApi responseApi = ResponseApi.fromJson(response.body);
-
-    print("RESPONSE USER deleteAccount: ${responseApi.toJson()}");
-
-    return responseApi;
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
   }
 
 
@@ -136,8 +216,7 @@ class UsersProvider extends GetConnect {
           message: "No se pudo actualizar el token"
       );
     }
-
-
+    
     Response response = await put('$url/updateNotificationToken', {
       "id": id,
       "token": token
@@ -157,12 +236,149 @@ class UsersProvider extends GetConnect {
       return ResponseApi();
     }
 
-    ResponseApi responseApi = ResponseApi.fromJson(response.body);
-
-    print("RESPONSE USER updateNotificationToken: ${responseApi.toJson()}");
-
-    return responseApi;
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
   }
+
+
+  Future<ResponseApi> sendCodePasswordRecovery(String email) async {
+    Response response = await post('$url/sendCodePasswordRecovery', {
+      "email": email
+    }, headers: {
+      'Content-Type': 'application/json'
+    });
+
+    print("RESPONSE USER sendCodePasswordRecovery: ${response.body}");
+
+    if (response.body == null) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi();
+    }
+
+    if (response.statusCode == 401) {
+      Get.snackbar("Error", "No estas autorizado para realizar esta acción");
+      return ResponseApi();
+    }
+
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
+  }
+
+
+  Future<ResponseApi> verifyCodePassword(int code, String email) async{
+    Response response = await post('$url/verifyCodePassword', {
+      "code": code,
+      "email": email
+    }, headers: {
+      'Content-Type': 'application/json'
+    });
+
+    print("RESPONSE USER verifyCodePassword: ${response.body}");
+
+    if (response.body == null) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi();
+    }
+
+    if (response.statusCode == 401) {
+      Get.snackbar("Error", "No estas autorizado para realizar esta acción");
+      return ResponseApi();
+    }
+
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
+  }
+
+
+  Future<ResponseApi> updatePassword(String password, String token) async {
+    Response response = await put('$url/updatePassword', {
+      "token": token,
+      "password": password
+    }, headers: {
+      'Content-Type': 'application/json'
+    });
+
+    print("RESPONSE  updatePassword: ${response.body}");
+
+    if (response.body == null) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi();
+    }
+
+    if (response.statusCode == 401) {
+      Get.snackbar("Error", "No estas autorizado para realizar esta acción");
+      return ResponseApi();
+    }
+
+    try{
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
+
+  }
+
+  Future<ResponseApi> loginWithGoogle(GoogleAuthData account) async {
+
+    Response response = await post('$url/loginWithGoogle',
+        account.toJson(),
+        headers: {
+          'Content-Type': 'application/json'
+        });
+
+    if (response.body == null) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi(
+          success: false,
+          message: "No se pudo ejecutar la petición"
+      );
+    }
+
+    try {
+      ResponseApi responseApi = ResponseApi.fromJson(response.body);
+      return responseApi;
+    } catch (e) {
+      print('ERROR LOGIN $e');
+      return ResponseApi(
+          success: false,
+          message: "Algo falló"
+      );
+    }
+
+  }
+
+
+
+
 
 
 

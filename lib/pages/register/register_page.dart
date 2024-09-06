@@ -8,170 +8,194 @@ class RegisterPage extends StatelessWidget {
 
   RegisterController con = Get.put(RegisterController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            _backgroundHome(MediaQuery.of(context).size.height, MediaQuery.of(context).size.width),
-            _boxForm(context),
-            _imageUser(context),
-            _buttonBack(),
-          ],
-        ),
-    );
-  }
-
-  Widget _backgroundHome(screenHeight, screenWidth) {
-    return Container(
-      width: screenWidth,
-      height: screenHeight  * 0.45,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-                Color(0xFF620505),
-                Color(0xFF481616)
-              ],
-              begin: FractionalOffset(0.2, 0.0),
-              end: FractionalOffset(1.0, 0.6),
-              stops: [0.0, 0.6],
-              tileMode: TileMode.clamp
-          )
-      ),
-      child: FittedBox(
-        fit: BoxFit.none,
-        alignment: Alignment(-1.5, -0.8),
-        child: Container(
-          width: screenHeight,
-          height: screenHeight,
-          decoration: BoxDecoration(
-              color: Color.fromRGBO(0, 0, 0, 0.05),
-              borderRadius: BorderRadius.circular(screenHeight / 2)
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+              color: Colors.black
           ),
         ),
-      ),
+        bottomNavigationBar: Container(height: 60, child:  _textHaveAccount()),
+        body: _contentRegister(context)
     );
   }
 
-  Widget _boxForm(BuildContext context) {
+  Widget _backgroundCover(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.70,
-      margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.25, left: 50, right: 50),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black26, blurRadius: 15, offset: Offset(0, 5))
-          ]),
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.35,
+        alignment: Alignment.center,
+        child:
+        //hacer que la imagen sea transparente
+        Opacity(
+          child:
+          Image(
+            image: AssetImage('assets/img/fondo.png'),
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+          opacity: 0.1,
+        )
+    );
+  }
+
+  Widget _contentRegister(BuildContext context) {
+    return Container(
+      width: double.infinity,
       child: SingleChildScrollView(
         child: Column(
           children: [
             _textYourInfo(),
             _textFiledEmail(),
             _textFiledName(),
-            _textFiledLastName(),
-        //    _textFiledPhone(),
+            // _textFiledLastName(),
+            // _textFiledPhone(),
             _textFiledPassword(),
             _textFiledConfirmPassword(),
             _buttonRegister(context),
+            _or(),
+            _signWithGoogle(),
           ],
         ),
       ),
     );
   }
 
-  Widget _textYourInfo() {
+  Widget _or(){
     return Container(
-      margin: EdgeInsets.only(top: 40, bottom: 30),
-      child: Text('INGRESA TUS DATOS',
-          style: TextStyle(
-              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black)),
+      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      child: Row(
+        children: [
+          Expanded(child: Divider(color: Colors.black)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text("O continua con", style: TextStyle(fontSize: 17)),
+          ),
+          Expanded(child: Divider(color: Colors.black)),
+        ],
+      ),
     );
+  }
+
+  Widget _signWithGoogle(){
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 20, left: 30, right: 30),
+      child: ElevatedButton.icon(
+        onPressed: () => {
+          con.continueWithGoogle()
+        },
+        icon: Image.asset('assets/img/google.png', height: 30, width: 30),
+        label: Text("Google", style: TextStyle(fontSize: 17, color: Colors.black)),
+        style: ElevatedButton.styleFrom(
+          elevation: 10,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),),
+      ),
+    );
+
+  }
+
+
+  Widget _textYaTengoUnaCuenta(){
+    return Container(
+      margin: EdgeInsets.only(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [TextButton(
+            onPressed: () => con.goToLoginPage(),
+            child: Text('Ya tengo una cuenta',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red)))
+        ],
+      ),
+    );
+  }
+
+  Widget _buttonRegister(BuildContext context) {
+    return
+      Obx(() =>
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 20, left: 30, right: 30, bottom: 20),
+            child: ElevatedButton(
+              onPressed: () => con.register(context),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  shape:
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  padding: EdgeInsets.symmetric(vertical: 15)),
+              child:
+              con.isLoading.value
+                  ? CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ) :
+              Text(
+                "Registrarse",
+                style: TextStyle(
+                    fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
+          ));
   }
 
   Widget _textFiledEmail() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: EdgeInsets.only(left: 30, right: 30, bottom: 5),
       child: TextField(
         controller: con.emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: 'Correo electrónico',
           labelText: 'Correo electrónico',
-          suffixIcon: Icon(Icons.email_outlined),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10)
-            )
+          suffixIcon: Icon(Icons.email, color: Colors.grey[700]),
         ),
-
       ),
     );
   }
 
   Widget _textFiledName() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: EdgeInsets.only(left: 30, right: 30, bottom: 5),
       child: TextField(
         controller: con.nameController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           hintText: 'Nombre',
           labelText: 'Nombre',
-          suffixIcon: Icon(Icons.person),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10)
-            )
-
+          suffixIcon: Icon(Icons.person, color: Colors.grey[700]),
         ),
       ),
     );
   }
 
-  Widget _textFiledLastName() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      child: TextField(
-        controller: con.lastNameController,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          hintText: 'Apellido',
-          labelText: 'Apellido',
-          suffixIcon: Icon(Icons.person_outline),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10)
-            )
-        ),
-      ),
-    );
-  }
 
 
   Widget _textFiledPassword() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: EdgeInsets.only(left: 30, right: 30, bottom: 5),
       child: TextField(
-       controller: con.passwordController,
+        controller: con.passwordController,
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
           hintText: 'Contraseña',
           labelText: 'Contraseña',
-          suffixIcon: Icon(Icons.lock_outline),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10)
-            )
+          suffixIcon: Icon(Icons.lock, color: Colors.grey[700]),
         ),
       ),
     );
   }
 
-
   Widget _textFiledConfirmPassword() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      margin: EdgeInsets.only(left: 30, right: 30, bottom: 5),
       child: TextField(
         controller: con.confirmPasswordController,
         keyboardType: TextInputType.text,
@@ -179,71 +203,72 @@ class RegisterPage extends StatelessWidget {
         decoration: InputDecoration(
           hintText: 'Confirmar contraseña',
           labelText: 'Confirmar contraseña',
-          suffixIcon: Icon(Icons.lock_outline),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10)
-            )
+          suffixIcon: Icon(Icons.lock, color: Colors.grey[700]),
         ),
       ),
     );
   }
 
 
-  Widget _buttonRegister(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
-      child: ElevatedButton(
-        onPressed: () => (),
-     //   onPressed: () => con.register(context),
-        style: ElevatedButton.styleFrom(
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            padding: EdgeInsets.symmetric(vertical: 15)),
-
-        child: Text(
-          "Registrarse",
-          style: TextStyle(
-              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  Widget _imageUser(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.only(top: 25),
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          //  onTap: () => con.showAlerDialog(context),
-            child: GetBuilder<RegisterController>(
-              builder: (valuer) =>
-                  CircleAvatar(
-                      backgroundImage: con.imageFile != null
-                          ? FileImage(con.imageFile! as File)
-                          :
-                      AssetImage('assets/img/photo.png') as ImageProvider,
-                      radius: 60,
-                      backgroundColor: Colors.white
-                  ),
-            )
-        ),
-      ),
-    );
-  }
 
   Widget _buttonBack(){
     return SafeArea(child:
     Container(
       margin: EdgeInsets.only(left: 20, top: 5),
       child: IconButton(
-        icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 30),
+        icon: Icon(Icons.arrow_back_ios, size: 30),
         onPressed: () => Get.back(),
       ),
     )
     );
   }
+
+  Widget _textYourInfo() {
+    return Container(
+      margin: EdgeInsets.only(top: 20, bottom: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Crea una cuenta',
+              style: TextStyle(
+                  fontSize: 22, fontWeight: FontWeight.bold)),
+          Text('Bienvenido, ingresa tus datos para continuar',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey[700],
+              )),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _textHaveAccount() {
+    return Row(
+      //Ubicar elementos uno al lado del otro
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+            "¿Ya tienes una cuenta?",
+            style: TextStyle(fontSize: 17,
+            )
+        ),
+        SizedBox(
+          width: 7,
+        ),
+        GestureDetector(
+          onTap: () => con.goToLoginPage(),
+          child: Text(
+            "Inicia sesión",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+        ),
+      ],
+    );
+  }
+
 
 
 

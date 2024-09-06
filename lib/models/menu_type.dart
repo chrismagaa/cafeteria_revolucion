@@ -36,7 +36,7 @@ class MenuType {
 class TypeFood {
   String? name;
   String? imageUrl;
-  List<Datum>? data;
+  List<Producto>? data;
 
   TypeFood({
      this.name,
@@ -47,7 +47,7 @@ class TypeFood {
   factory TypeFood.fromJson(Map<String, dynamic> json) => TypeFood(
     name: json["name"],
     imageUrl: json["image_url"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<Producto>.from(json["data"].map((x) => Producto.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,27 +57,59 @@ class TypeFood {
   };
 }
 
-class Datum {
+class Producto {
   String? name;
   String? imageUrl;
+  String? grupo;
+  String? descripcion;
   List<Size>? sizes;
+  List<ExtraProducto>? extras;
 
-  Datum({
+  Producto({
     this.name,
     this.imageUrl,
+    this.grupo,
+    this.descripcion,
     this.sizes,
+    this.extras
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Producto.fromJson(Map<String, dynamic> json) => Producto(
     name: json["name"],
     imageUrl: json["image_url"],
+    grupo: json["grupo"],
+    descripcion: json["descripcion"],
     sizes: List<Size>.from(json["sizes"].map((x) => Size.fromJson(x))),
+    extras: List<ExtraProducto>.from(json["extras"].map((x) => ExtraProducto.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "image_url": imageUrl,
+    "grupo": grupo,
+    "descripcion": descripcion,
     "sizes": List<dynamic>.from(sizes!.map((x) => x.toJson())),
+    "extras": List<dynamic>.from(extras!.map((x) => x.toJson())),
+  };
+}
+
+class ExtraProducto {
+  String? name;
+  double? price;
+
+  ExtraProducto({
+    this.name,
+    this.price,
+  });
+
+  factory ExtraProducto.fromJson(Map<String, dynamic> json) => ExtraProducto(
+    name: json["nombre"],
+    price: json["precio"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nombre": name,
+    "precio": price,
   };
 }
 
