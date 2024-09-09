@@ -116,7 +116,7 @@ class ExtraProducto {
 class Size {
   String? size;
   String? calories;
-  int? price;
+  double? price;
 
   Size({
     this.size,

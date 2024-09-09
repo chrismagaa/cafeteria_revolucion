@@ -1,6 +1,5 @@
 import 'package:cafeteria_revolucion/pages/client/client_controller.dart';
 import 'package:cafeteria_revolucion/pages/client/home/client_home_page.dart';
-import 'package:cafeteria_revolucion/pages/client/menu/client_menu_page.dart';
 import 'package:cafeteria_revolucion/pages/client/ordena/client_ordena_page.dart';
 import 'package:cafeteria_revolucion/pages/client/promos/client_promos_page.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +19,8 @@ class ClientPage extends StatelessWidget {
       bottomNavigationBar: _bottomNavigationBar(),
       body: <Widget>[
         ClientHomePage(),
-        ClientMenuPage(),
-        ClientPromosPage(),
-        ClientOrdenaPage()
+        ClientOrdenaPage(),
+        ClientPromosPage()
       ][con.currentPageIndex.value],
     ));
   }
@@ -41,20 +39,16 @@ class ClientPage extends StatelessWidget {
             label: 'Inicio',
           ),
           NavigationDestination(
-            icon: Icon(Icons.book),
-            selectedIcon: Icon(Icons.book_sharp, color: Colors.white),
-            label: 'Menu',
+            icon: Icon(Icons.fastfood_outlined),
+            selectedIcon: Icon(Icons.fastfood_outlined, color: Colors.white),
+            label: 'Ordena',
           ),
           NavigationDestination(
             icon: Icon(Icons.percent_sharp),
             selectedIcon: Icon(Icons.percent_sharp, color: Colors.white),
             label: 'Promociones',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.shopping_bag),
-            selectedIcon: Icon(Icons.shopping_bag_sharp, color: Colors.white),
-            label: 'Ordena',
-          ),
+
         ]
     );
   }

@@ -1,5 +1,6 @@
 import 'package:cafeteria_revolucion/environment/environment.dart';
 import 'package:cafeteria_revolucion/models/menu_type.dart';
+import 'package:cafeteria_revolucion/models/response_api.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../models/user.dart';
@@ -11,7 +12,7 @@ class MenuProvider  extends GetConnect{
   User userSession = User.fromJson(GetStorage().read('user') ?? {});
 
 
-  Future<Response> getMenu() async {
+  Future<ResponseApi> getMenu() async {
 
     Response response = await get('$url/getAll',
       headers: {
@@ -19,18 +20,21 @@ class MenuProvider  extends GetConnect{
         'Authorization': "Token ${userSession.authToken ?? ''}"
     });
 
-    if(response.status == 401) {
-      Get.snackbar("Error", "No se pudo ejecutar la petición");
-      return Response();
-    }
-
     print("RESPONSE MENU getAll: ${response.body}");
 
-    List<MenuType> menu = MenuType.fromJsonList(response.body);
+    if(response.status == 401) {
+      Get.snackbar("Error", "No se pudo ejecutar la petición");
+      return ResponseApi(success: false, message: "No se pudo ejecutar la petición");
+    }
 
-    print("MENU: ${menu.length}");
 
-    return response;
+    try {
+      return ResponseApi.fromJson(response.body);
+    } catch (e) {
+      print("Error en getMenu: $e");
+      return ResponseApi(success: false, message: "Error en getMenu");
+    }
+
    }
 
 

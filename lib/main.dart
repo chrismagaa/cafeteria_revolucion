@@ -1,4 +1,6 @@
 import 'package:cafeteria_revolucion/pages/client/client_page.dart';
+import 'package:cafeteria_revolucion/pages/client/ordena/alimentos/client_ordena_alimentos_page.dart';
+import 'package:cafeteria_revolucion/pages/client/ordena/config/client_ordnea_config_page.dart';
 import 'package:cafeteria_revolucion/pages/onboarding/onboarding_page.dart';
 import 'package:cafeteria_revolucion/pages/password_recovery/email/password_recovery_email_page.dart';
 import 'package:cafeteria_revolucion/pages/password_recovery/update/password_recovery_update_page.dart';
@@ -6,6 +8,7 @@ import 'package:cafeteria_revolucion/pages/password_recovery/verification/passwo
 import 'package:cafeteria_revolucion/pages/phone/register/phone_register_page.dart';
 import 'package:cafeteria_revolucion/pages/phone/verification/phone_verification_page.dart';
 import 'package:cafeteria_revolucion/pages/register/register_page.dart';
+import 'package:cafeteria_revolucion/pages/restaurants/restaurants_page.dart';
 import 'package:cafeteria_revolucion/pages/welcome/welcome_page.dart';
 import 'package:cafeteria_revolucion/providers/push_notifications_provider.dart';
 import 'package:cafeteria_revolucion/utils/firebase_config.dart';
@@ -43,7 +46,8 @@ PushNotificationsProvider pushNotificationsProvider = PushNotificationsProvider(
 
       pushNotificationsProvider.initPushNotification();
 
-      runApp(MyApp());
+
+       runApp(MyApp());
     }
 
     class MyApp extends StatefulWidget {
@@ -85,7 +89,9 @@ PushNotificationsProvider pushNotificationsProvider = PushNotificationsProvider(
             GetPage(name: "/password_recovery/update", page: () => PasswordRecoveryUpdatePage()),
             GetPage(name: "/password_recovery/email", page: () => PasswordRecoveryEmailPage()),
             GetPage(name: "/password_recovery/verification", page: () => PasswordRecoveryVerificationPage()),
-
+            GetPage(name: "/restaurants", page: () => RestaurantsPage()),
+            GetPage(name: "/client/ordena/config", page: () => ClientOrdneaConfigPage()),
+            GetPage(name: "client/ordena/alimentos", page: () => ClientOrdenaAlimentosPage()),
           ],
           navigatorKey: Get.key,
           theme: ThemeData(
